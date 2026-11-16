@@ -1,6 +1,5 @@
-@"
 env/
-venv/
+build/
+dist/
+*.spec
 __pycache__/
-*.pyc
-"@ | Set-Content .gitignore
