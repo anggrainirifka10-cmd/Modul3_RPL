@@ -13,10 +13,14 @@ class BukuController:
 
         # Binding tombol simpan
         self.view.btn_simpan.configure(command=self.simpan_data)
+        # Binding tombol logout
+        self.view.btn_logout.configure(command=self.logout)
 
         # OTORISASI: Jika bukan admin, nonaktifkan form input dan tombol simpan
         if self.user_role != "admin":
             self.view.btn_simpan.configure(state="disabled", text="Akses Terkunci (Khusus Admin)")
+            self.view.btn_update.configure(state="disabled")  # Tambahkan 
+            self.view.btn_hapus.configure(state="disabled")   # Tambahkan 
             self.view.entry_judul.configure(state="disabled")
             self.view.entry_penulis.configure(state="disabled")
             self.view.entry_tahun.configure(state="disabled")
@@ -52,6 +56,15 @@ class BukuController:
             self.muat_data_tabel()
         else:
             messagebox.showerror("Error", "Gagal menyimpan data.")
+
+    def logout(self):
+        # Impor di dalam fungsi untuk mencegah circular import dengan AuthController
+        from controllers.auth_controller import AuthController
+        
+        if messagebox.askyesno("Konfirmasi Logout", "Apakah Anda yakin ingin keluar?"):
+            self.view.destroy()
+            app_login = AuthController()
+            app_login.run()
 
     def run(self):
         self.view.mainloop()
